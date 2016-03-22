@@ -217,7 +217,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x7ce
+.text           0x00000000      0x7c6
  *(.vectors)
  .vectors       0x00000000       0x7c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
                 0x00000000                __vector_default
@@ -232,56 +232,55 @@ END GROUP
                 0x0000007c                __trampolines_end = .
  *(.progmem*)
  .progmem.data.usbDescriptorHidReport
-                0x0000007c       0x49 main.o
+                0x0000007c       0x42 main.o
                 0x0000007c                usbDescriptorHidReport
  .progmem.data.usbDescriptorConfiguration
-                0x000000c5       0x22 usbdrv/usbdrv.o
-                0x000000c5                usbDescriptorConfiguration
+                0x000000be       0x22 usbdrv/usbdrv.o
+                0x000000be                usbDescriptorConfiguration
  .progmem.data.usbDescriptorDevice
-                0x000000e7       0x12 usbdrv/usbdrv.o
-                0x000000e7                usbDescriptorDevice
+                0x000000e0       0x12 usbdrv/usbdrv.o
+                0x000000e0                usbDescriptorDevice
  .progmem.data.usbDescriptorStringSerialNumber
-                0x000000f9       0x12 usbdrv/usbdrv.o
-                0x000000f9                usbDescriptorStringSerialNumber
+                0x000000f2       0x12 usbdrv/usbdrv.o
+                0x000000f2                usbDescriptorStringSerialNumber
  .progmem.data.usbDescriptorStringDevice
-                0x0000010b       0x22 usbdrv/usbdrv.o
-                0x0000010b                usbDescriptorStringDevice
+                0x00000104       0x22 usbdrv/usbdrv.o
+                0x00000104                usbDescriptorStringDevice
  .progmem.data.usbDescriptorStringVendor
-                0x0000012d       0x18 usbdrv/usbdrv.o
-                0x0000012d                usbDescriptorStringVendor
+                0x00000126       0x18 usbdrv/usbdrv.o
+                0x00000126                usbDescriptorStringVendor
  .progmem.data.usbDescriptorString0
-                0x00000145        0x4 usbdrv/usbdrv.o
-                0x00000145                usbDescriptorString0
-                0x0000014a                . = ALIGN (0x2)
- *fill*         0x00000149        0x1 
+                0x0000013e        0x4 usbdrv/usbdrv.o
+                0x0000013e                usbDescriptorString0
+                0x00000142                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x0000014a                __ctors_start = .
+                0x00000142                __ctors_start = .
  *(.ctors)
-                0x0000014a                __ctors_end = .
-                0x0000014a                __dtors_start = .
+                0x00000142                __ctors_end = .
+                0x00000142                __dtors_start = .
  *(.dtors)
-                0x0000014a                __dtors_end = .
+                0x00000142                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x0000014a        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
-                0x0000014a                __init
+ .init0         0x00000142        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+                0x00000142                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x0000014a        0xc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+ .init2         0x00000142        0xc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x00000156       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_copy_data.o)
-                0x00000156                __do_copy_data
- .init4         0x0000016c       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_clear_bss.o)
-                0x0000016c                __do_clear_bss
+ .init4         0x0000014e       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_copy_data.o)
+                0x0000014e                __do_copy_data
+ .init4         0x00000164       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_clear_bss.o)
+                0x00000164                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -292,76 +291,76 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x0000017c        0x8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+ .init9         0x00000174        0x8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
  *(.init9)
  *(.text)
- .text          0x00000184        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
-                0x00000184                __vector_22
-                0x00000184                __vector_28
-                0x00000184                __vector_24
-                0x00000184                __vector_12
-                0x00000184                __bad_interrupt
-                0x00000184                __vector_6
-                0x00000184                __vector_3
-                0x00000184                __vector_23
-                0x00000184                __vector_30
-                0x00000184                __vector_25
-                0x00000184                __vector_11
-                0x00000184                __vector_13
-                0x00000184                __vector_17
-                0x00000184                __vector_19
-                0x00000184                __vector_7
-                0x00000184                __vector_27
-                0x00000184                __vector_5
-                0x00000184                __vector_4
-                0x00000184                __vector_9
-                0x00000184                __vector_2
-                0x00000184                __vector_21
-                0x00000184                __vector_15
-                0x00000184                __vector_29
-                0x00000184                __vector_8
-                0x00000184                __vector_26
-                0x00000184                __vector_14
-                0x00000184                __vector_10
-                0x00000184                __vector_16
-                0x00000184                __vector_18
-                0x00000184                __vector_20
- .text          0x00000188      0x2a6 usbdrv/usbdrvasm.o
-                0x00000188                usbCrc16
-                0x000001b2                usbCrc16Append
-                0x000001ba                __vector_1
-                0x0000042e                . = ALIGN (0x2)
+ .text          0x0000017c        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+                0x0000017c                __vector_22
+                0x0000017c                __vector_28
+                0x0000017c                __vector_24
+                0x0000017c                __vector_12
+                0x0000017c                __bad_interrupt
+                0x0000017c                __vector_6
+                0x0000017c                __vector_3
+                0x0000017c                __vector_23
+                0x0000017c                __vector_30
+                0x0000017c                __vector_25
+                0x0000017c                __vector_11
+                0x0000017c                __vector_13
+                0x0000017c                __vector_17
+                0x0000017c                __vector_19
+                0x0000017c                __vector_7
+                0x0000017c                __vector_27
+                0x0000017c                __vector_5
+                0x0000017c                __vector_4
+                0x0000017c                __vector_9
+                0x0000017c                __vector_2
+                0x0000017c                __vector_21
+                0x0000017c                __vector_15
+                0x0000017c                __vector_29
+                0x0000017c                __vector_8
+                0x0000017c                __vector_26
+                0x0000017c                __vector_14
+                0x0000017c                __vector_10
+                0x0000017c                __vector_16
+                0x0000017c                __vector_18
+                0x0000017c                __vector_20
+ .text          0x00000180      0x2a6 usbdrv/usbdrvasm.o
+                0x00000180                usbCrc16
+                0x000001aa                usbCrc16Append
+                0x000001b2                __vector_1
+                0x00000426                . = ALIGN (0x2)
  *(.text.*)
  .text.usbFunctionSetup
-                0x0000042e       0x44 main.o
-                0x0000042e                usbFunctionSetup
+                0x00000426       0x44 main.o
+                0x00000426                usbFunctionSetup
  .text.startup.main
-                0x00000472       0x88 main.o
-                0x00000472                main
+                0x0000046a       0x88 main.o
+                0x0000046a                main
  .text.ENC_InitEncoder
-                0x000004fa        0xe encoder.o
-                0x000004fa                ENC_InitEncoder
+                0x000004f2        0xe encoder.o
+                0x000004f2                ENC_InitEncoder
  .text.ENC_PollEncoder
-                0x00000508       0x38 encoder.o
-                0x00000508                ENC_PollEncoder
+                0x00000500       0x38 encoder.o
+                0x00000500                ENC_PollEncoder
  .text.ENC_GetStateEncoder
-                0x00000540        0xa encoder.o
-                0x00000540                ENC_GetStateEncoder
+                0x00000538        0xa encoder.o
+                0x00000538                ENC_GetStateEncoder
  .text.ENC_GetBtnState
-                0x0000054a        0xe encoder.o
-                0x0000054a                ENC_GetBtnState
+                0x00000542        0xe encoder.o
+                0x00000542                ENC_GetBtnState
  .text.usbSetInterrupt
-                0x00000558       0x46 usbdrv/usbdrv.o
-                0x00000558                usbSetInterrupt
- .text.usbPoll  0x0000059e      0x212 usbdrv/usbdrv.o
-                0x0000059e                usbPoll
- .text.usbInit  0x000007b0       0x1a usbdrv/usbdrv.o
-                0x000007b0                usbInit
-                0x000007ca                . = ALIGN (0x2)
+                0x00000550       0x46 usbdrv/usbdrv.o
+                0x00000550                usbSetInterrupt
+ .text.usbPoll  0x00000596      0x212 usbdrv/usbdrv.o
+                0x00000596                usbPoll
+ .text.usbInit  0x000007a8       0x1a usbdrv/usbdrv.o
+                0x000007a8                usbInit
+                0x000007c2                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000007ca        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x000007ca                _exit
-                0x000007ca                exit
+ .fini9         0x000007c2        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x000007c2                _exit
+                0x000007c2                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -380,11 +379,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000007ca        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x000007c2        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000007ce                _etext = .
+                0x000007c6                _etext = .
 
-.data           0x00800100        0x2 load address 0x000007ce
+.data           0x00800100        0x2 load address 0x000007c6
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -427,8 +426,8 @@ END GROUP
                 0x00800128                usbConfiguration
                 0x00800129                usbRxBuf
                 0x0080013f                PROVIDE (__bss_end, .)
-                0x000007ce                __data_load_start = LOADADDR (.data)
-                0x000007d0                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000007c6                __data_load_start = LOADADDR (.data)
+                0x000007c8                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x0080013f        0x0
                 0x0080013f                PROVIDE (__noinit_start, .)
@@ -515,19 +514,19 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xe86
+.debug_info     0x00000000      0xe87
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x3ef main.o
- .debug_info    0x000003ef      0x12a encoder.o
- .debug_info    0x00000519      0x8f9 usbdrv/usbdrv.o
- .debug_info    0x00000e12       0x74 usbdrv/usbdrvasm.o
+ .debug_info    0x00000000      0x3f0 main.o
+ .debug_info    0x000003f0      0x12a encoder.o
+ .debug_info    0x0000051a      0x8f9 usbdrv/usbdrv.o
+ .debug_info    0x00000e13       0x74 usbdrv/usbdrvasm.o
 
-.debug_abbrev   0x00000000      0x61b
+.debug_abbrev   0x00000000      0x628
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x216 main.o
- .debug_abbrev  0x00000216       0xf5 encoder.o
- .debug_abbrev  0x0000030b      0x2fc usbdrv/usbdrv.o
- .debug_abbrev  0x00000607       0x14 usbdrv/usbdrvasm.o
+ .debug_abbrev  0x00000000      0x223 main.o
+ .debug_abbrev  0x00000223       0xf5 encoder.o
+ .debug_abbrev  0x00000318      0x2fc usbdrv/usbdrv.o
+ .debug_abbrev  0x00000614       0x14 usbdrv/usbdrvasm.o
 
 .debug_line     0x00000000      0x58f
  *(.debug_line .debug_line.* .debug_line_end)
