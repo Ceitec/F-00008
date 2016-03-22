@@ -47,8 +47,8 @@ PROGMEM const char usbHidReportDescriptor[72] = { // USB report descriptor
     0x09, 0x04,          // Usage (mouse)
     0xA1, 0x01,          // Collection (app)
     0x05, 0x09,          //		Usage page (buttons)
-    0x19, 0x01,
-    0x29, 0x03,
+    0x19, 0x01,			 //		Usage minimum (1)
+    0x29, 0x03,			 //		Usage maximum (3)
     0x15, 0x00,          //		Logical min (0)
     0x25, 0x01,          //		Logical max (1)
     0x95, 0x03,          //		Report count (3)
@@ -149,53 +149,45 @@ usbMsgLen_t usbFunctionSetup(uchar data[8])
 	usbRequest_t	*rq = (void *)data;
 	
     usbMsgPtr = reportBuffer;
-	
-    if((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS)	// class request type
+	switch(rq->bmRequestType & USBRQ_TYPE_MASK)
 	{
-        if(rq->bRequest == USBRQ_HID_GET_REPORT)	  // wValue: ReportType (highbyte), ReportID (lowbyte)
-		{
-            // we only have one report type, so don't look at wValue
-            DBG1(0x21,rq,8);
-			return sizeof(reportBuffer);
-        }
-		else if(rq->bRequest == USBRQ_HID_GET_IDLE)
-		{
-            usbMsgPtr = &idleRate;
-			DBG1(0x22,rq,8);
-            return 1;
-        }
-		else if(rq->bRequest == USBRQ_HID_SET_IDLE)
-		{
-            DBG1(0x23,rq,8);
-			idleRate = rq->wValue.bytes[1];
-        
-        }
-		else if(rq->bRequest == USBRQ_HID_GET_PROTOCOL)
-		{
-            DBG1(0x24,rq,8);
-        
-        }
-		else if(rq->bRequest == USBRQ_HID_SET_PROTOCOL)
-		{
-            DBG1(0x25,rq,8);
-        }
-		
-    }
-	else
-	{
-        // no vendor specific requests implemented 
-    }
-	
-	switch(rq->bRequest)
-	{
-		case 0:
-			if (rq->bRequest)
+		case USBRQ_TYPE_CLASS:
+			if(rq->bRequest == USBRQ_HID_GET_REPORT)	  // wValue: ReportType (highbyte), ReportID (lowbyte)
 			{
+				// we only have one report type, so don't look at wValue
+				DBG1(0x21,rq,8);
+				return sizeof(reportBuffer);
+			}
+			else if(rq->bRequest == USBRQ_HID_GET_IDLE)
+			{
+				usbMsgPtr = &idleRate;
+				DBG1(0x22,rq,8);
+				return 1;
+			}
+			else if(rq->bRequest == USBRQ_HID_SET_IDLE)
+			{
+				DBG1(0x23,rq,8);
+				idleRate = rq->wValue.bytes[1];
+				
+			}
+			else if(rq->bRequest == USBRQ_HID_GET_PROTOCOL)
+			{
+				DBG1(0x24,rq,8);
+				
+			}
+			else if(rq->bRequest == USBRQ_HID_SET_PROTOCOL)
+			{
+				DBG1(0x25,rq,8);
 			}
 			break;
+		case USBRQ_TYPE_VENDOR:
+			
+			break;
 		default:
+			// no vendor specific requests implemented
 			break;
 	}
+    
 	return 0;
 }
 /* ------------------------------------------------------------------------- */
