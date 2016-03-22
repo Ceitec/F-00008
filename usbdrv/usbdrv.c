@@ -166,7 +166,8 @@ PROGMEM const char usbDescriptorConfiguration[] = {    /* USB configuration desc
     9,          /* sizeof(usbDescrHID): length of descriptor in bytes */
     USBDESCR_HID,   /* descriptor type: HID */
     0x01, 0x01, /* BCD representation of HID version */
-    0x00,       /* target country code */
+    // 0x00,       /* target country code */
+	0x05,		// Supported for Czech Republic
     0x01,       /* number of HID Report (or other HID class) Descriptor infos to follow */
     0x22,       /* descriptor type: report */
     USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH, 0,  /* total length of report descriptor */

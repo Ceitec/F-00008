@@ -119,7 +119,7 @@ section at the end of this file).
 /* Define this to 1 if the device has its own power supply. Set it to 0 if the
  * device is powered from the USB bus.
  */
-#define USB_CFG_MAX_BUS_POWER           100
+#define USB_CFG_MAX_BUS_POWER           250
 /* Set this variable to the maximum USB bus power consumption of your device.
  * The value is in milliamperes. [It will be divided by two since USB
  * communicates power requirements in units of 2 mA.]
@@ -228,7 +228,7 @@ section at the end of this file).
  * with libusb: 0x16c0/0x5dc.  Use this VID/PID pair ONLY if you understand
  * the implications!
  */
-#define  USB_CFG_DEVICE_ID       0xdc, 0x27 /* obdev's shared PID for HID Keyboard */
+#define  USB_CFG_DEVICE_ID       0xdc, 0x05 /* obdev's shared PID for HID Keyboard */
 /* This is the ID of the product, low byte first. It is interpreted in the
  * scope of the vendor ID. If you have registered your own VID with usb.org
  * or if you have licensed a PID from somebody else, define it here. Otherwise
@@ -258,8 +258,8 @@ section at the end of this file).
  * the macros. See the file USB-IDs-for-free.txt before you assign a name if
  * you use a shared VID/PID.
  */
-/*#define USB_CFG_SERIAL_NUMBER   'N', 'o', 'n', 'e' */
-/*#define USB_CFG_SERIAL_NUMBER_LEN   0 */
+#define USB_CFG_SERIAL_NUMBER   'U', 'S', 'B', 'A' , '0', '0', '0', '0'
+#define USB_CFG_SERIAL_NUMBER_LEN   8 
 /* Same as above for the serial number. If you don't want a serial number,
  * undefine the macros.
  * It may be useful to provide the serial number through other means than at
@@ -273,14 +273,18 @@ section at the end of this file).
  * Class 0xff is "vendor specific".
  */
 #define USB_CFG_INTERFACE_CLASS     3   /* HID */
-#define USB_CFG_INTERFACE_SUBCLASS  1   /*Keyoard*/
+#define USB_CFG_INTERFACE_SUBCLASS  4   /*Keyoard*/
 #define USB_CFG_INTERFACE_PROTOCOL  1   /*Boot protocol*/
 /* See USB specification if you want to conform to an existing device class or
  * protocol. The following classes must be set at interface level:
  * HID class is 3, no subclass and protocol required (but may be useful!)
  * CDC class is 2, use subclass 2 and protocol 1 for ACM
  */
-#define USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH    25
+//////////////////////////////////////////////////////////////////////////
+//Tohle je pùvodní
+//#define USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH    24
+//////////////////////////////////////////////////////////////////////////
+#define USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH	72
 /* Define this to the length of the HID report descriptor, if you implement
  * an HID device. Otherwise don't define it or define it to 0.
  * If you use this define, you must add a PROGMEM character array named

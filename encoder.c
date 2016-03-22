@@ -16,7 +16,7 @@ void ENC_InitEncoder(void)
   ClearBit(DDR_Enc, Pin1_Enc); //input
   ClearBit(DDR_Enc, Pin2_Enc);
   ClearBit(DDR_Enc, Btn_Enc);
-  SetBit(PORT_Enc, Pin1_Enc);//turn on pull up
+  SetBit(PORT_Enc, Pin1_Enc);	//turn on pull up
   SetBit(PORT_Enc, Pin2_Enc);
   SetBit(PORT_Enc, Btn_Enc);
 }
