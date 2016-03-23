@@ -5,46 +5,29 @@
 #include "usbdrv.h"
 #include "encoder.h"
 #include "oddebug.h"
+#include "ADC.h"
 
-static uchar reportBuffer[3] = {0,0,0} ;
+typedef struct{
+	uchar	buttons;
+	uchar	diodes;
+	uchar	dx;
+	uchar	dy;
+	uchar	dz;
+	uchar	dWheel;
+}report_t;
+
+static report_t reportBuffer;
 static uchar idleRate;           /* in 4 ms units */
-/*
-PROGMEM const char usbHidReportDescriptor[25] = { // USB report descriptor
-	0x05, 0x0c,                    // USAGE_PAGE (Consumer Devices)
-	0x09, 0x01,                    // USAGE (Consumer Control)
-	0xa1, 0x01,                    // COLLECTION (Application)
-	0x85, 0x01,                    //   REPORT_ID (1)
-	0x19, 0x00,                    //   USAGE_MINIMUM (Unassigned)
-	0x2a, 0x3c, 0x02,              //   USAGE_MAXIMUM (AC Format)
-	0x15, 0x00,                    //   LOGICAL_MINIMUM (0)
-	0x26, 0x3c, 0x02,              //   LOGICAL_MAXIMUM (572)
-	0x95, 0x01,                    //   REPORT_COUNT (1)
-	0x75, 0x10,                    //   REPORT_SIZE (8)
-	0x81, 0x00,                    //   INPUT (Data,Var,Abs)
-	0xc0                           // END_COLLECTION
-};
-*/
 
-#define USB_DESC_LENGHT 24
+#ifdef USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH
+	#undef USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH
+#endif
+	#define USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH	66
+	
 
-/*
-PROGMEM const char usbHidReportDescriptor[20] = { // USB report descriptor
-	0x05, 0x01,						// USAGE_PAGE (Consumer Devices)
-	0x09, 0x04,						// USAGE (Consumer Control)
-	0xa1, 0x01,						// COLLECTION (Application)
-	0x85, 0x01,						//   REPORT_ID (1)
-	0x15, 0x00,						//   LOGICAL_MINIMUM (0)
-	0x26, 0xFF, 0x00,				//   LOGICAL_MAXIMUM (255)
-	0x75, 0x08,						//   REPORT_SIZE (8)
-	0x95, 0x01,						//   REPORT_COUNT (1)
-	0x81, 0x00,						//   INPUT (Data,Var,Abs)
-	0xc0							// END_COLLECTION
-};
-
-*/
-PROGMEM const char usbHidReportDescriptor[66] = { // USB report descriptor
+PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] = { // USB report descriptor
     0x06, 0xFF, 0x00,			// Usage page (desktop)
-    0x09, 0x04,					// Usage (USB HID Joystick)
+    0x09, 0x00,					// Usage (USB HID Joystick)
     0xA1, 0x01,					// Collection (app)
 	// Všechny odchozí pøíkazy 
 	0x09, 0x01,					//	USAGE(Pointer)
@@ -59,9 +42,8 @@ PROGMEM const char usbHidReportDescriptor[66] = { // USB report descriptor
     0x75, 0x01,				    //		Report size (1)
 	//LED diody
 	0x05, 0x08,					//		USAGE PAGE (LEDs)
-	/*0x19, 0x01,					//		Usage minimum (1)
-	0x29, 0x05,					//		Usage maximum (5)
-	*/
+	//0x19, 0x01,					//		Usage minimum (1)
+	//0x29, 0x05,					//		Usage maximum (5)
 	0x09, 0x06,					//		Usage (POWER)
 	0x09, 0x00,					//		Usage (UD)
 	0x09, 0x00,					//		Usage (UD)
@@ -72,6 +54,7 @@ PROGMEM const char usbHidReportDescriptor[66] = { // USB report descriptor
 	0x25, 0x01,					//		Logical max (1)
 	0x95, 0x05,			        //		Report count (5)
 	0x75, 0x01,				    //		Report size (1)
+	
 	//X, Y, Z a Zoom
 	0x05 ,0x01,					//		Usage_Page (Generic Desktop)
 	0x09, 0x30, 		        //		Usage (x)
@@ -85,75 +68,18 @@ PROGMEM const char usbHidReportDescriptor[66] = { // USB report descriptor
 	0xC0,        		        // End collection
 	0xC0        		        // End collection
 };
-/*
-PROGMEM const char usbHidReportDescriptor[49] = { // USB report descriptor
-	0x05, 0x01,						// USAGE_PAGE (Generic Desktop)
-	0x09, 0x08,						// USAGE (Multi-Axis Controller)
-	0xa1, 0x01,					    // COLLECTION (Application)
-	0x85, 0x01,					    //   REPORT_ID (1)
-	0x15, 0x00,					    //   LOGICAL_MINIMUM (0)
-	0x26, 0x3c, 0x02,			    //   LOGICAL_MAXIMUM (572)
-	0x95, 0x01,						//   REPORT_COUNT (1)
-	0x75, 0x10,						//   REPORT_SIZE (16)
-	0x81, 0x00,						//   INPUT (Data,Var,Abs)
-	0xA1, 0x00,						//		COLLECTION(Physical)
-	0x05 ,0x09,						//			Usage_Page (Button)
-	0x19 ,0x01,						//			Usage_Minimum (Button 1)
-	0x29 ,0x08,						//			Usage_Maximum (Button 8)
-	0x15 ,0x00,						//			Logical_Minimum (0)
-	0x25 ,0x01,						//			Logical_Maximum (1)
-	0x05 ,0x01,						//			Usage_Page (Generic Desktop)
-	0x09 ,0x30,						//			Usage (X)
-	0x09 ,0x31,						//			Usage (Y)
-	0x09 ,0x32,						//			Usage (Z)
-	0x15 ,0x81,						//			Logical_Minimum (-127)
-	0x25 ,0x7F,						//			Logical_Maximum (127)
-	0x95 ,0x02,						//			Report_Count (2)
-	0x81 ,0x02,						//			Input (Data, Var, Abs)
-	0xc0,							// END_COLLECTION
-	0xc0							// END_COLLECTION
-};
-*/
-/*
-PROGMEM const char usbHidReportDescriptor[48] = { // USB report descriptor
-0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-0x09, 0x02,                    // USAGE (Mouse)
-0xa1, 0x01,                    // COLLECTION (Application)
-0x09, 0x01,                    //   USAGE (Pointer)
-0xa1, 0x00,                    //   COLLECTION (Physical)
-0x05, 0x09,                    //     USAGE_PAGE (Button)
-0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
-0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
-0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-0x95, 0x03,                    //     REPORT_COUNT (3)
-0x75, 0x01,                    //     REPORT_SIZE (1)
-0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-0x95, 0x01,                    //     REPORT_COUNT (1)
-0x75, 0x05,                    //     REPORT_SIZE (5)
-0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
-0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-0x09, 0x30,                    //     USAGE (X)
-0x09, 0x31,                    //     USAGE (Y)
-0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
-0x75, 0x08,                    //     REPORT_SIZE (8)
-0x95, 0x02,                    //     REPORT_COUNT (2)
-0x81, 0x06,                    //     INPUT (Data,Var,Rel)
-0xc0,                          //   END_COLLECTION
-0xc0                           // END_COLLECTION
-};
-*/
-//DAF
+
 
 /* ------------------------------------------------------------------------- */
+
+
+
 
 usbMsgLen_t usbFunctionSetup(uchar data[8])
 {
 	usbRequest_t	*rq = (void *)data;
-	
-    usbMsgPtr = reportBuffer;
-	switch(rq->bmRequestType & USBRQ_TYPE_MASK)
+	usbMsgPtr = (void *)&reportBuffer;
+    switch(rq->bmRequestType & USBRQ_TYPE_MASK)
 	{
 		case USBRQ_TYPE_CLASS:
 			if(rq->bRequest == USBRQ_HID_GET_REPORT)	  // wValue: ReportType (highbyte), ReportID (lowbyte)
@@ -196,37 +122,57 @@ usbMsgLen_t usbFunctionSetup(uchar data[8])
 }
 /* ------------------------------------------------------------------------- */
 
+/*
+PA0 - ADC0 - X osa
+PA1 - ADC1 - Y osa
+PA2 - ADC2 - Z osa
+*/
+
 int main(void)
 {
-    uchar encstate;
+    /*uchar encstate;
     uchar Btnstate = 0;
     uchar LastBtnstate = 0;
 	uchar LastKeyPress = 0;
 	uchar KeyPressed = 0;
- 	odDebugInit();
-	ENC_InitEncoder();
+	*/
+ 	//odDebugInit();
+	//ENC_InitEncoder();
     usbInit();
     usbDeviceDisconnect();  
     uchar i = 0;
-    while(--i){             
+    while(--i)
+	{             
         _delay_ms(1);
-
     }
-    
     usbDeviceConnect();     
-
     sei();                  
+	/*
 	reportBuffer[0] = 1;  // ReportID = 1
+	reportBuffer[1] = 1;
 	reportBuffer[2] = 0;  
-    DBG1(0x00, 0, 0);
+	*/
+    //DBG1(0x00, 0, 0);
+	/*
+	reportBuffer.buttons = 0x12;
+	reportBuffer.diodes = 0x34;
+	reportBuffer.dx = 0x56;
+	reportBuffer.dy = 0x78;
+	reportBuffer.dz = 0x9A;
+	reportBuffer.dWheel = 0xBC;*/
 	while(1)
 	{
-      usbPoll();          
-      ENC_PollEncoder();
+		usbPoll();
+		if (usbInterruptIsReady())
+		{
+			usbSetInterrupt((void *)&reportBuffer, sizeof(reportBuffer));
+		}
+		
+      /*ENC_PollEncoder();
 	  
       ///////////////////////////////////////////////
       
-      KeyPressed = 0;
+	  KeyPressed = 0;
 	  encstate = ENC_GetStateEncoder();
       if (LEFT_SPIN == encstate)
       {
@@ -242,28 +188,32 @@ int main(void)
 	    if (Btnstate != 1) KeyPressed = 0xe2;				
 		LastBtnstate = Btnstate;
 	  }	
-        
-	  if(LastKeyPress != KeyPressed){
+      
+	  if(LastKeyPress != KeyPressed)
+	  {
 		 DBG1(0x01, reportBuffer, 3);
-		 if (usbInterruptIsReady()){
+		 if (usbInterruptIsReady())
+		 {
 			LastKeyPress = KeyPressed;
 			reportBuffer[1] = KeyPressed;
 			DBG1(0x01, reportBuffer, 3);
-			/* use last key and not current key status in order to avoid lost
-             changes in key status. */
+			// use last key and not current key status in order to avoid lost changes in key status.
 			usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
 		 }	
-		/* This block sets the the number of additional keypress a volume key. 
-		This increases the rate of change of volume of from 2 to 50 times
-		The number of additional keypress sets by the variable AdditionalKeyPress. 	*/
+		// This block sets the the number of additional keypress a volume key. 
+		// This increases the rate of change of volume of from 2 to 50 times
+		// The number of additional keypress sets by the variable AdditionalKeyPress.
 		uchar AdditionalKeyPress = 0;
-		while(AdditionalKeyPress--){ 
-			if ((KeyPressed == 0xea)||(KeyPressed == 0xe9)){
+		while(AdditionalKeyPress--)
+		{ 
+			if ((KeyPressed == 0xea)||(KeyPressed == 0xe9))
+			{
 				while (!(usbInterruptIsReady())){}
 				usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
 			}
 		}//End of block		
       }
+	  */
 	}
     return 0;
 }

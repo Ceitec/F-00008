@@ -82,7 +82,13 @@
   </PropertyGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
   <ItemGroup>
+    <Compile Include="ADC.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="encoder.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ADC.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="types.h">

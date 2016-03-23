@@ -38,6 +38,7 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../ADC.c \
 ../main.c \
 ../encoder.c \
 ../usbdrv/oddebug.c \
@@ -52,6 +53,7 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+ADC.o \
 main.o \
 encoder.o \
 usbdrv/oddebug.o \
@@ -59,6 +61,7 @@ usbdrv/usbdrv.o \
 usbdrv/usbdrvasm.o
 
 OBJS_AS_ARGS +=  \
+ADC.o \
 main.o \
 encoder.o \
 usbdrv/oddebug.o \
@@ -66,6 +69,7 @@ usbdrv/usbdrv.o \
 usbdrv/usbdrvasm.o
 
 C_DEPS +=  \
+ADC.d \
 main.d \
 encoder.d \
 usbdrv/oddebug.d \
@@ -73,6 +77,7 @@ usbdrv/usbdrv.d \
 usbdrv/usbdrvasm.d
 
 C_DEPS_AS_ARGS +=  \
+ADC.d \
 main.d \
 encoder.d \
 usbdrv/oddebug.d \
@@ -93,6 +98,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
