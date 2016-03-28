@@ -63,7 +63,7 @@ PROGMEM const char usbHidReportDescriptor[52] = { // USB report descriptor, size
 };
 */
 
-PROGMEM const char usbHidReportDescriptor[50] = {
+PROGMEM const char usbHidReportDescriptor[48] = {
 	0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
 	0x09, 0x04,                    // USAGE (Joystick)
 	0xa1, 0x01,                    // COLLECTION (Application)
@@ -79,17 +79,18 @@ PROGMEM const char usbHidReportDescriptor[50] = {
 	0x95, 0x08,                    //     REPORT_COUNT (8)
 	0x81, 0x02,                    //     INPUT (Data,Var,Abs)
 /*
+nejprve do report id 1 dát tlaèítka a wheel a report id 2 bude x y a z. vždy usage_page a mezi input musí bejt size count atd o tom....
 	0x75, 0x05,                    //     REPORT_SIZE (5) 
 	0x95, 0x01,                    //     REPORT_COUNT (1)
 	0x81, 0x03,                    //     INPUT (Const,Var,Abs)
 */
-	0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
+	//0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
 	0x09, 0x30,                    //     USAGE (X)
 	0x09, 0x31,                    //     USAGE (Y)
 	0x09, 0x32,                    //     USAGE (Z)
 	0x09, 0x38,                    //     USAGE (Wheel)
-	0x15, 0x81,				       //     LOGICAL_MINIMUM (-511)
-	0x25, 0x7F,					   //     LOGICAL_MAXIMUM (511)
+	0x15, 0x00,				       //     LOGICAL_MINIMUM (0)
+	0x25, 0x7F,					   //     LOGICAL_MAXIMUM (127)
 	0x75, 0x08,                    //     REPORT_SIZE (8)
 	0x95, 0x04,                    //     REPORT_COUNT (4)
 	0x81, 0x02,                    //     INPUT (Data,Var,Abs)
