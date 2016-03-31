@@ -3,7 +3,7 @@ Archive member included to satisfy reference by file (symbol)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
                               C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o (exit)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_copy_data.o)
-                              usbdrv/usbdrv.o (__do_copy_data)
+                              main.o (__do_copy_data)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_clear_bss.o)
                               main.o (__do_clear_bss)
 
@@ -12,6 +12,7 @@ Common symbol       size              file
 
 usbTxBuf            0xb               usbdrv/usbdrv.o
 usbTxStatus1        0xc               usbdrv/usbdrv.o
+Vystup              0x3               main.o
 usbDeviceAddr       0x1               usbdrv/usbdrv.o
 usbRxToken          0x1               usbdrv/usbdrv.o
 usbInputBufOffset   0x1               usbdrv/usbdrv.o
@@ -29,45 +30,13 @@ Discarded input sections
  .text          0x00000000        0x0 ADC.o
  .data          0x00000000        0x0 ADC.o
  .bss           0x00000000        0x0 ADC.o
- .text.InitADC  0x00000000       0x16 ADC.o
- .text.ReadADC  0x00000000       0x2a ADC.o
- .debug_info    0x00000000       0xb7 ADC.o
- .debug_abbrev  0x00000000       0x78 ADC.o
- .debug_loc     0x00000000       0x21 ADC.o
- .debug_aranges
-                0x00000000       0x28 ADC.o
- .debug_ranges  0x00000000       0x18 ADC.o
- .debug_line    0x00000000       0xb3 ADC.o
- .debug_str     0x00000000      0x185 ADC.o
- .comment       0x00000000       0x31 ADC.o
- .debug_frame   0x00000000       0x34 ADC.o
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
+ COMMON         0x00000000        0x3 main.o
  .text          0x00000000        0x0 encoder.o
  .data          0x00000000        0x0 encoder.o
  .bss           0x00000000        0x0 encoder.o
- .text.ENC_InitEncoder
-                0x00000000        0xe encoder.o
- .text.ENC_PollEncoder
-                0x00000000       0x38 encoder.o
- .text.ENC_GetStateEncoder
-                0x00000000        0xa encoder.o
- .text.ENC_GetBtnState
-                0x00000000        0xe encoder.o
- .bss.stateEnc.1497
-                0x00000000        0x1 encoder.o
- .bss.bufEnc    0x00000000        0x1 encoder.o
- .debug_info    0x00000000      0x12a encoder.o
- .debug_abbrev  0x00000000       0xf5 encoder.o
- .debug_loc     0x00000000       0x66 encoder.o
- .debug_aranges
-                0x00000000       0x38 encoder.o
- .debug_ranges  0x00000000       0x28 encoder.o
- .debug_line    0x00000000       0xf1 encoder.o
- .debug_str     0x00000000      0x1c6 encoder.o
- .comment       0x00000000       0x31 encoder.o
- .debug_frame   0x00000000       0x54 encoder.o
  .text          0x00000000        0x0 usbdrv/oddebug.o
  .data          0x00000000        0x0 usbdrv/oddebug.o
  .bss           0x00000000        0x0 usbdrv/oddebug.o
@@ -254,7 +223,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x71c
+.text           0x00000000      0x86c
  *(.vectors)
  .vectors       0x00000000       0x7c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
                 0x00000000                __vector_default
@@ -269,55 +238,55 @@ END GROUP
                 0x0000007c                __trampolines_end = .
  *(.progmem*)
  .progmem.data.usbDescriptorHidReport
-                0x0000007c       0x30 main.o
+                0x0000007c       0x3e main.o
                 0x0000007c                usbDescriptorHidReport
  .progmem.data.usbDescriptorConfiguration
-                0x000000ac       0x22 usbdrv/usbdrv.o
-                0x000000ac                usbDescriptorConfiguration
+                0x000000ba       0x22 usbdrv/usbdrv.o
+                0x000000ba                usbDescriptorConfiguration
  .progmem.data.usbDescriptorDevice
-                0x000000ce       0x12 usbdrv/usbdrv.o
-                0x000000ce                usbDescriptorDevice
+                0x000000dc       0x12 usbdrv/usbdrv.o
+                0x000000dc                usbDescriptorDevice
  .progmem.data.usbDescriptorStringSerialNumber
-                0x000000e0       0x12 usbdrv/usbdrv.o
-                0x000000e0                usbDescriptorStringSerialNumber
+                0x000000ee       0x12 usbdrv/usbdrv.o
+                0x000000ee                usbDescriptorStringSerialNumber
  .progmem.data.usbDescriptorStringDevice
-                0x000000f2       0x22 usbdrv/usbdrv.o
-                0x000000f2                usbDescriptorStringDevice
+                0x00000100       0x22 usbdrv/usbdrv.o
+                0x00000100                usbDescriptorStringDevice
  .progmem.data.usbDescriptorStringVendor
-                0x00000114       0x18 usbdrv/usbdrv.o
-                0x00000114                usbDescriptorStringVendor
+                0x00000122       0x18 usbdrv/usbdrv.o
+                0x00000122                usbDescriptorStringVendor
  .progmem.data.usbDescriptorString0
-                0x0000012c        0x4 usbdrv/usbdrv.o
-                0x0000012c                usbDescriptorString0
-                0x00000130                . = ALIGN (0x2)
+                0x0000013a        0x4 usbdrv/usbdrv.o
+                0x0000013a                usbDescriptorString0
+                0x0000013e                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x00000130                __ctors_start = .
+                0x0000013e                __ctors_start = .
  *(.ctors)
-                0x00000130                __ctors_end = .
-                0x00000130                __dtors_start = .
+                0x0000013e                __ctors_end = .
+                0x0000013e                __dtors_start = .
  *(.dtors)
-                0x00000130                __dtors_end = .
+                0x0000013e                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x00000130        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
-                0x00000130                __init
+ .init0         0x0000013e        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+                0x0000013e                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x00000130        0xc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+ .init2         0x0000013e        0xc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x0000013c       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_copy_data.o)
-                0x0000013c                __do_copy_data
- .init4         0x00000152       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_clear_bss.o)
-                0x00000152                __do_clear_bss
+ .init4         0x0000014a       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_copy_data.o)
+                0x0000014a                __do_copy_data
+ .init4         0x00000160       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_clear_bss.o)
+                0x00000160                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -328,64 +297,76 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x00000162        0x8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+ .init9         0x00000170        0x8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
  *(.init9)
  *(.text)
- .text          0x0000016a        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
-                0x0000016a                __vector_22
-                0x0000016a                __vector_28
-                0x0000016a                __vector_24
-                0x0000016a                __vector_12
-                0x0000016a                __bad_interrupt
-                0x0000016a                __vector_6
-                0x0000016a                __vector_3
-                0x0000016a                __vector_23
-                0x0000016a                __vector_30
-                0x0000016a                __vector_25
-                0x0000016a                __vector_11
-                0x0000016a                __vector_13
-                0x0000016a                __vector_17
-                0x0000016a                __vector_19
-                0x0000016a                __vector_7
-                0x0000016a                __vector_27
-                0x0000016a                __vector_5
-                0x0000016a                __vector_4
-                0x0000016a                __vector_9
-                0x0000016a                __vector_2
-                0x0000016a                __vector_21
-                0x0000016a                __vector_15
-                0x0000016a                __vector_29
-                0x0000016a                __vector_8
-                0x0000016a                __vector_26
-                0x0000016a                __vector_14
-                0x0000016a                __vector_10
-                0x0000016a                __vector_16
-                0x0000016a                __vector_18
-                0x0000016a                __vector_20
- .text          0x0000016e      0x2a6 usbdrv/usbdrvasm.o
-                0x0000016e                usbCrc16
-                0x00000198                usbCrc16Append
-                0x000001a0                __vector_1
-                0x00000414                . = ALIGN (0x2)
+ .text          0x00000178        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATmega_DFP/1.0.98/gcc/dev/atmega644p/avr5/crtatmega644p.o
+                0x00000178                __vector_22
+                0x00000178                __vector_28
+                0x00000178                __vector_24
+                0x00000178                __vector_12
+                0x00000178                __bad_interrupt
+                0x00000178                __vector_6
+                0x00000178                __vector_3
+                0x00000178                __vector_23
+                0x00000178                __vector_30
+                0x00000178                __vector_25
+                0x00000178                __vector_11
+                0x00000178                __vector_13
+                0x00000178                __vector_17
+                0x00000178                __vector_19
+                0x00000178                __vector_7
+                0x00000178                __vector_27
+                0x00000178                __vector_5
+                0x00000178                __vector_9
+                0x00000178                __vector_2
+                0x00000178                __vector_21
+                0x00000178                __vector_15
+                0x00000178                __vector_29
+                0x00000178                __vector_8
+                0x00000178                __vector_26
+                0x00000178                __vector_14
+                0x00000178                __vector_10
+                0x00000178                __vector_16
+                0x00000178                __vector_18
+                0x00000178                __vector_20
+ .text          0x0000017c      0x2a6 usbdrv/usbdrvasm.o
+                0x0000017c                usbCrc16
+                0x000001a6                usbCrc16Append
+                0x000001ae                __vector_1
+                0x00000422                . = ALIGN (0x2)
  *(.text.*)
+ .text.InitADC  0x00000422       0x16 ADC.o
+                0x00000422                InitADC
+ .text.ReadADC  0x00000438       0x2a ADC.o
+                0x00000438                ReadADC
+ .text.__vector_4
+                0x00000462       0x6e main.o
+                0x00000462                __vector_4
  .text.usbFunctionSetup
-                0x00000414       0x42 main.o
-                0x00000414                usbFunctionSetup
+                0x000004d0       0x42 main.o
+                0x000004d0                usbFunctionSetup
  .text.startup.main
-                0x00000456       0x5e main.o
-                0x00000456                main
+                0x00000512       0xd2 main.o
+                0x00000512                main
+ .text.ENC_InitEncoder
+                0x000005e4        0xa encoder.o
+                0x000005e4                ENC_InitEncoder
+ .text.ENC_Intterupt_Set
+                0x000005ee       0x16 encoder.o
+                0x000005ee                ENC_Intterupt_Set
  .text.usbSetInterrupt
-                0x000004b4       0x46 usbdrv/usbdrv.o
-                0x000004b4                usbSetInterrupt
- .text.usbPoll  0x000004fa      0x204 usbdrv/usbdrv.o
-                0x000004fa                usbPoll
- .text.usbInit  0x000006fe       0x1a usbdrv/usbdrv.o
-                0x000006fe                usbInit
-                0x00000718                . = ALIGN (0x2)
+                0x00000604       0x46 usbdrv/usbdrv.o
+                0x00000604                usbSetInterrupt
+ .text.usbPoll  0x0000064a      0x204 usbdrv/usbdrv.o
+                0x0000064a                usbPoll
+ .text.usbInit  0x0000084e       0x1a usbdrv/usbdrv.o
+                0x0000084e                usbInit
+                0x00000868                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000718        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
-                0x00000718                _exit
-                0x00000718                exit
+ .fini9         0x00000868        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+                0x00000868                _exit
+                0x00000868                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -404,11 +385,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000718        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000868        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000071c                _etext = .
+                0x0000086c                _etext = .
 
-.data           0x00800100        0x2 load address 0x0000071c
+.data           0x00800100       0x12 load address 0x0000086c
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -419,43 +400,53 @@ END GROUP
                 0x00800101                usbTxLen
  *(.rodata)
  *(.rodata*)
+ .rodata.enc_states.1839
+                0x00800102       0x10 main.o
  *(.gnu.linkonce.d*)
-                0x00800102                . = ALIGN (0x2)
-                0x00800102                _edata = .
-                0x00800102                PROVIDE (__data_end, .)
+                0x00800112                . = ALIGN (0x2)
+                0x00800112                _edata = .
+                0x00800112                PROVIDE (__data_end, .)
 
-.bss            0x00800102       0x3d
-                0x00800102                PROVIDE (__bss_start, .)
+.bss            0x00800112       0x47
+                0x00800112                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.idleRate  0x00800102        0x1 main.o
- .bss.reportBuffer
-                0x00800103        0x5 main.o
+ .bss.old_AB.1840
+                0x00800112        0x1 main.o
+ .bss.idleRate  0x00800113        0x1 main.o
+ .bss.reportBuffer_REPORT2
+                0x00800114        0x7 main.o
+ .bss.reportBuffer_REPORT1
+                0x0080011b        0x4 main.o
+ .bss.counter   0x0080011f        0x2 main.o
+                0x0080011f                counter
+ .bss.encval    0x00800121        0x1 main.o
+                0x00800121                encval
  .bss.usbMsgFlags
-                0x00800108        0x1 usbdrv/usbdrv.o
+                0x00800122        0x1 usbdrv/usbdrv.o
  *(COMMON)
- COMMON         0x00800109       0x36 usbdrv/usbdrv.o
-                0x00800109                usbTxBuf
-                0x00800114                usbTxStatus1
-                0x00800120                usbDeviceAddr
-                0x00800121                usbRxToken
-                0x00800122                usbInputBufOffset
-                0x00800123                usbMsgPtr
-                0x00800125                usbRxLen
-                0x00800126                usbNewDeviceAddr
-                0x00800127                usbCurrentTok
-                0x00800128                usbConfiguration
-                0x00800129                usbRxBuf
-                0x0080013f                PROVIDE (__bss_end, .)
-                0x0000071c                __data_load_start = LOADADDR (.data)
-                0x0000071e                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800123       0x36 usbdrv/usbdrv.o
+                0x00800123                usbTxBuf
+                0x0080012e                usbTxStatus1
+                0x0080013a                usbDeviceAddr
+                0x0080013b                usbRxToken
+                0x0080013c                usbInputBufOffset
+                0x0080013d                usbMsgPtr
+                0x0080013f                usbRxLen
+                0x00800140                usbNewDeviceAddr
+                0x00800141                usbCurrentTok
+                0x00800142                usbConfiguration
+                0x00800143                usbRxBuf
+                0x00800159                PROVIDE (__bss_end, .)
+                0x0000086c                __data_load_start = LOADADDR (.data)
+                0x0000087e                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080013f        0x0
-                0x0080013f                PROVIDE (__noinit_start, .)
+.noinit         0x00800159        0x0
+                0x00800159                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x0080013f                PROVIDE (__noinit_end, .)
-                0x0080013f                _end = .
-                0x0080013f                PROVIDE (__heap_start, .)
+                0x00800159                PROVIDE (__noinit_end, .)
+                0x00800159                _end = .
+                0x00800159                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -496,8 +487,10 @@ END GROUP
 
 .comment        0x00000000       0x30
  *(.comment)
- .comment       0x00000000       0x30 main.o
+ .comment       0x00000000       0x30 ADC.o
                                  0x31 (size before relaxing)
+ .comment       0x00000030       0x31 main.o
+ .comment       0x00000030       0x31 encoder.o
  .comment       0x00000030       0x31 usbdrv/usbdrv.o
 
 .note.gnu.avr.deviceinfo
@@ -520,52 +513,69 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x78
+.debug_aranges  0x00000000       0xd0
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x28 main.o
+                0x00000000       0x28 ADC.o
  .debug_aranges
-                0x00000028       0x30 usbdrv/usbdrv.o
+                0x00000028       0x30 main.o
  .debug_aranges
-                0x00000058       0x20 usbdrv/usbdrvasm.o
+                0x00000058       0x28 encoder.o
+ .debug_aranges
+                0x00000080       0x30 usbdrv/usbdrv.o
+ .debug_aranges
+                0x000000b0       0x20 usbdrv/usbdrvasm.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xd53
+.debug_info     0x00000000     0x1030
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x3df main.o
- .debug_info    0x000003df      0x900 usbdrv/usbdrv.o
- .debug_info    0x00000cdf       0x74 usbdrv/usbdrvasm.o
+ .debug_info    0x00000000       0xb8 ADC.o
+ .debug_info    0x000000b8      0x56b main.o
+ .debug_info    0x00000623       0x99 encoder.o
+ .debug_info    0x000006bc      0x900 usbdrv/usbdrv.o
+ .debug_info    0x00000fbc       0x74 usbdrv/usbdrvasm.o
 
-.debug_abbrev   0x00000000      0x567
+.debug_abbrev   0x00000000      0x650
  *(.debug_abbrev)
- .debug_abbrev  0x00000000      0x257 main.o
- .debug_abbrev  0x00000257      0x2fc usbdrv/usbdrv.o
- .debug_abbrev  0x00000553       0x14 usbdrv/usbdrvasm.o
+ .debug_abbrev  0x00000000       0x7a ADC.o
+ .debug_abbrev  0x0000007a      0x275 main.o
+ .debug_abbrev  0x000002ef       0x51 encoder.o
+ .debug_abbrev  0x00000340      0x2fc usbdrv/usbdrv.o
+ .debug_abbrev  0x0000063c       0x14 usbdrv/usbdrvasm.o
 
-.debug_line     0x00000000      0x4ea
+.debug_line     0x00000000      0x684
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x1b9 main.o
- .debug_line    0x000001b9      0x174 usbdrv/usbdrv.o
- .debug_line    0x0000032d      0x1bd usbdrv/usbdrvasm.o
+ .debug_line    0x00000000       0xb3 ADC.o
+ .debug_line    0x000000b3      0x1f0 main.o
+ .debug_line    0x000002a3       0xb0 encoder.o
+ .debug_line    0x00000353      0x174 usbdrv/usbdrv.o
+ .debug_line    0x000004c7      0x1bd usbdrv/usbdrvasm.o
 
-.debug_frame    0x00000000       0x8c
+.debug_frame    0x00000000      0x128
  *(.debug_frame)
- .debug_frame   0x00000000       0x34 main.o
- .debug_frame   0x00000034       0x58 usbdrv/usbdrv.o
+ .debug_frame   0x00000000       0x34 ADC.o
+ .debug_frame   0x00000034       0x68 main.o
+ .debug_frame   0x0000009c       0x34 encoder.o
+ .debug_frame   0x000000d0       0x58 usbdrv/usbdrv.o
 
-.debug_str      0x00000000      0x53a
+.debug_str      0x00000000      0x5ed
  *(.debug_str)
- .debug_str     0x00000000      0x2cb main.o
-                                0x313 (size before relaxing)
- .debug_str     0x000002cb      0x26f usbdrv/usbdrv.o
+ .debug_str     0x00000000      0x151 ADC.o
+                                0x185 (size before relaxing)
+ .debug_str     0x00000151      0x21e main.o
+                                0x39b (size before relaxing)
+ .debug_str     0x0000036f        0xf encoder.o
+                                0x187 (size before relaxing)
+ .debug_str     0x0000037e      0x26f usbdrv/usbdrv.o
                                 0x4e1 (size before relaxing)
 
-.debug_loc      0x00000000      0x8bf
+.debug_loc      0x00000000      0x950
  *(.debug_loc)
- .debug_loc     0x00000000       0xb5 main.o
- .debug_loc     0x000000b5      0x80a usbdrv/usbdrv.o
+ .debug_loc     0x00000000       0x21 ADC.o
+ .debug_loc     0x00000021      0x125 main.o
+ .debug_loc     0x00000146      0x80a usbdrv/usbdrv.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -585,10 +595,12 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xe8
+.debug_ranges   0x00000000      0x120
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x18 main.o
- .debug_ranges  0x00000018       0xd0 usbdrv/usbdrv.o
+ .debug_ranges  0x00000000       0x18 ADC.o
+ .debug_ranges  0x00000018       0x20 main.o
+ .debug_ranges  0x00000038       0x18 encoder.o
+ .debug_ranges  0x00000050       0xd0 usbdrv/usbdrv.o
 
 .debug_macro
  *(.debug_macro)

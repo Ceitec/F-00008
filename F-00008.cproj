@@ -85,6 +85,9 @@
     <Compile Include="ADC.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="common_defs.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="encoder.h">
       <SubType>compile</SubType>
     </Compile>

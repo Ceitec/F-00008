@@ -4,19 +4,26 @@
 #define	encoder_h
 #include <avr/io.h>
 //_________________________________________
-//encoder port & pins
-#define PORT_Enc 	PORTA 	
-#define PIN_Enc 	PINA
-#define DDR_Enc 	DDRA
-#define Pin1_Enc 	0
-#define Pin2_Enc 	1
-#define Btn_Enc 	2
+//Definice pinù
+#define ENC_PORT PINA	//	Port kde jsou Encodery
+#define ENC_CTL	DDRA	//	Pro nastevení Pull-up rezistorù
+#define ENC_WR	PORTA	//	Zápis do portu Encoderu
+#define ENC_RD	PINA	//	Ètení portu Encoderu
+#define ENC_A PA0		//	Pin A Encoderu
+#define ENC_B PA1		//	Pin B Encoderu
+
+#define PCIE0_Part		PCIE0
+#define PCINT_Vect_Part	PCINT0_vect
+#define PCMSK_Registr	PCMSK0
+#define PCINT_ENC_A		PCINT0
+#define PCINT_ENC_B		PCINT1
 //______________________
-#define RIGHT_SPIN 0x01 
-#define LEFT_SPIN 0xff
+
 
 void ENC_InitEncoder(void);
-void ENC_PollEncoder(void);
-unsigned char ENC_GetStateEncoder(void);
-unsigned char ENC_GetBtnState(void);
+void ENC_Intterupt_Set(void);
+
 #endif  //encoder_h
+
+
+

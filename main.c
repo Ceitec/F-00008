@@ -25,45 +25,38 @@ publish any hardware using these IDs! This is for demonstration only!
 #include <avr/pgmspace.h>   /* required by usbdrv.h */
 #include "usbdrv.h"
 #include "oddebug.h"        /* This is also an example for using debug macros */
+#include "ADC.h"
+#include "encoder.h"
+#include "common_defs.h"
+
+
+
+volatile uint8_t Vystup[3];
+volatile uint8_t encval = 0;
+volatile uint16_t counter = 0;      //Èítaè
+
+// Pøerušení Encoderu (ètení a zapsání hodnoty do èítaèe)
+ISR(PCINT_Vect_Part)
+{
+	static uint8_t enc_states[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
+	static uint8_t old_AB = 0;
+	/**/
+	old_AB <<= 2;                   //remember previous state
+	old_AB |= ( ENC_PORT & 0x03 );  //add current state
+	encval = ( enc_states[( old_AB & 0x0f )]);
+	if( encval )
+	{
+		counter += encval;
+	}
+}
+
 
 /* ------------------------------------------------------------------------- */
 /* ----------------------------- USB interface ----------------------------- */
 /* ------------------------------------------------------------------------- */
+/* ------------------------------ Descriptor ------------------------------- */
 
-
-/*
-PROGMEM const char usbHidReportDescriptor[52] = { // USB report descriptor, size must match usbconfig.h 
-    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-    0x09, 0x01,                    // USAGE (Mouse)
-    0xa1, 0x01,                    // COLLECTION (Application)
-    0x09, 0x01,                    //   USAGE (Pointer)
-    0xA1, 0x00,                    //   COLLECTION (Physical)
-    0x05, 0x09,                    //     USAGE_PAGE (Button)
-    0x19, 0x01,                    //     USAGE_MINIMUM
-    0x29, 0x03,                    //     USAGE_MAXIMUM
-    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
-    0x75, 0x01,                    //     REPORT_SIZE (1)
-    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-    0x95, 0x01,                    //     REPORT_COUNT (1)
-    0x75, 0x05,                    //     REPORT_SIZE (5)
-    0x81, 0x03,                    //     INPUT (Const,Var,Abs)
-    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-    0x09, 0x30,                    //     USAGE (X)
-    0x09, 0x31,                    //     USAGE (Y)
-    0x09, 0x38,                    //     USAGE (Wheel)
-    0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-    0x25, 0x7F,                    //     LOGICAL_MAXIMUM (127)
-    0x75, 0x08,                    //     REPORT_SIZE (8)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
-    0x81, 0x06,                    //     INPUT (Data,Var,Rel)
-    0xC0,                          //   END_COLLECTION
-    0xC0,                          // END COLLECTION
-};
-*/
-
-PROGMEM const char usbHidReportDescriptor[48] = {
+PROGMEM const char usbHidReportDescriptor[62] = {
 	0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
 	0x09, 0x04,                    // USAGE (Joystick)
 	0xa1, 0x01,                    // COLLECTION (Application)
@@ -75,24 +68,32 @@ PROGMEM const char usbHidReportDescriptor[48] = {
 	0x29, 0x08,                    //     USAGE_MAXIMUM (Button 8)
 	0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
 	0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-	0x75, 0x01,                    //     REPORT_SIZE (1)
 	0x95, 0x08,                    //     REPORT_COUNT (8)
+	0x75, 0x01,                    //     REPORT_SIZE (1)
 	0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-/*
+	0x09, 0x38,                    //     USAGE (Wheel)
+	0x15, 0x00,				       //     LOGICAL_MINIMUM (0)
+	0x26, 0xFF, 0x03,			   //     LOGICAL_MAXIMUM (1023)
+	0x75, 0x10,                    //     REPORT_SIZE (10)
+	0x95, 0x01,                    //     REPORT_COUNT (1)
+	0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+	
+	0x85, 0x02,                    //     REPORT_ID (2)
+	/*
 nejprve do report id 1 dát tlaèítka a wheel a report id 2 bude x y a z. vždy usage_page a mezi input musí bejt size count atd o tom....
 	0x75, 0x05,                    //     REPORT_SIZE (5) 
 	0x95, 0x01,                    //     REPORT_COUNT (1)
 	0x81, 0x03,                    //     INPUT (Const,Var,Abs)
 */
 	//0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
+	
 	0x09, 0x30,                    //     USAGE (X)
 	0x09, 0x31,                    //     USAGE (Y)
-	0x09, 0x32,                    //     USAGE (Z)
-	0x09, 0x38,                    //     USAGE (Wheel)
+	0x09, 0x32,                    //     USAGE (Z)	
 	0x15, 0x00,				       //     LOGICAL_MINIMUM (0)
-	0x25, 0x7F,					   //     LOGICAL_MAXIMUM (127)
-	0x75, 0x08,                    //     REPORT_SIZE (8)
-	0x95, 0x04,                    //     REPORT_COUNT (4)
+	0x26, 0xFF, 0x03,			   //     LOGICAL_MAXIMUM (1023)
+	0x75, 0x10,                    //     REPORT_SIZE (8)
+	0x95, 0x03,                    //     REPORT_COUNT (3)
 	0x81, 0x02,                    //     INPUT (Data,Var,Abs)
 	0xC0,                          //   END_COLLECTION
 	0xC0,                           //               END_COLLECTION
@@ -106,59 +107,28 @@ nejprve do report id 1 dát tlaèítka a wheel a report id 2 bude x y a z. vždy usa
  *     W7 W6 W5 W4 W3 W2 W1 W0 .... 8 bit signed relative coordinate wheel
  */
 
- 
-/*
-PROGMEM const char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] = { // USB report descriptor, size must match usbconfig.h 
-	0x05, 0x01,					//	USAGE_PAGE (Generic Desktop)
-	0x09, 0x04,					//	USAGE (Game pad)
-	0xa1, 0x01,					//	COLLECTION (Application)
-	0xA1, 0x00,					//		COLLECTION (Physical)
-	0x85, 0x01,					//			REPORT_ID(1)
-	0x05, 0x09,					//			USAGE_PAGE (Button)
-	0x19, 0x01,					//			USAGE_MINIMUM (1)
-	0x29, 0x03,					//			USAGE_MAXIMUM (3)
-	0x15, 0x00,					//			LOGICAL_MINIMUM (0)
-	0x25, 0x01,					//			LOGICAL_MAXIMUM (1)
-	0x95, 0x03,					//			REPORT_COUNT (3)
-	0x75, 0x01,					//			REPORT_SIZE (1)
-	0x81, 0x06,					//			INPUT (DATA, VAR, ABS)
-	0x05, 0x01,					//			USAGE_PAGE (Generic Desktop)
-	0x09, 0x30,					//			USAGE (X)
-	0x09, 0x31,					//			USAGE (Y)
-	0x09, 0x32,					//			USAGE (Z)
-	0x09, 0x38,					//			USAGE (WHEEL)
-	0x15, 0x81,					//			LOGICAL_MINIMUM (-511)
-	0x25, 0x7F,					//			LOGICAL_MAXIMUM (511)
-	0x75, 0x0A,					//			REPORT_SIZE (10)
-	0x95, 0x02,					//			REPORT_COUNT (2)
-	0x81, 0x06,					//			INPUT (DATA, VAR, ABS)
+//Definování pinù pro X, Y a Z osu
+#define	AxisX_PIN	PINA3
+#define	AxisY_PIN	PINA4
+#define	AxisZ_PIN	PINA5
 
-	0x05, 0x08,					//			USAGE_PAGE (LEDs)
-	0x19, 0x00,					//			USAGE_MINIMUM (0)
-	0x29, 0x4B,					//			USAGE_MAXIMUM (75)
-	0x15, 0x00,					//			LOGICAL_MINIMUM (0)
-	0x25, 0x01,					//			LOGICAL_MAXIMUM (1)
-	0x95, 0x08,					//			REPORT_COUNT (8)
-	0x75, 0x01,					//			REPORT_SIZE (1)
-	0x91, 0x02,					//			OUTPUT (DATA, VAR, ABS)
-
-	0xC0,						//		COLLECTION END
-	0xC0,						//	COLLECTION END
-	
-};
-*/
-
-
+//Definování struktury ReportID1
 typedef struct{
-    char	buttonMask;
-    char	dx;
-    char	dy;
-	char	dz;
-    char	dWheel;
-}report_t;
+	uint8_t		ReportID;
+    uint8_t		buttonMask;
+    uint16_t	dWheel;
+}report_t1;
 
-static report_t reportBuffer;
-static int      sinus = 7 << 6, cosinus = 0;
+//Definování struktury ReportID2
+typedef struct{
+	uint8_t		ReportID;
+	uint16_t	dx;
+	uint16_t	dy;
+	uint16_t	dz;
+}report_t2;
+
+static report_t1 reportBuffer_REPORT1;
+static report_t2 reportBuffer_REPORT2;
 static uchar    idleRate;   /* repeat rate for keyboards, never used for mice */
 
 
@@ -167,16 +137,6 @@ static uchar    idleRate;   /* repeat rate for keyboards, never used for mice */
  * descriptor.
  * The algorithm is the simulation of a second order differential equation.
  */
-static void advanceCircleByFixedAngle(void)
-{
-char    d;
-
-#define DIVIDE_BY_64(val)  (val + (val > 0 ? 32 : -32)) >> 6    /* rounding divide */
-    reportBuffer.dx = d = DIVIDE_BY_64(cosinus);
-    sinus += d;
-    reportBuffer.dy = d = DIVIDE_BY_64(sinus);
-    cosinus -= d;
-}
 
 /* ------------------------------------------------------------------------- */
 
@@ -191,8 +151,8 @@ usbRequest_t    *rq = (void *)data;
         DBG1(0x50, &rq->bRequest, 1);   /* debug output: print our request */
         if(rq->bRequest == USBRQ_HID_GET_REPORT){  /* wValue: ReportType (highbyte), ReportID (lowbyte) */
             /* we only have one report type, so don't look at wValue */
-            usbMsgPtr = (void *)&reportBuffer;
-            return sizeof(reportBuffer);
+            usbMsgPtr = (void *)&reportBuffer_REPORT1;
+            return sizeof(reportBuffer_REPORT1);
         }else if(rq->bRequest == USBRQ_HID_GET_IDLE){
             usbMsgPtr = &idleRate;
             return 1;
@@ -209,8 +169,7 @@ usbRequest_t    *rq = (void *)data;
 
 int main(void)
 {
-uchar   i;
-
+	uchar   i;
     wdt_enable(WDTO_1S);
     /* Even if you don't use the watchdog, turn it off here. On newer devices,
      * the status of the watchdog (on/off, period) is PRESERVED OVER RESET!
@@ -224,28 +183,52 @@ uchar   i;
     usbInit();
     usbDeviceDisconnect();  /* enforce re-enumeration, do this while interrupts are disabled! */
     i = 0;
-    while(--i){             /* fake USB disconnect for > 250 ms */
+    while(--i)
+	{             /* fake USB disconnect for > 250 ms */
         wdt_reset();
         _delay_ms(1);
     }
     usbDeviceConnect();
     sei();
     DBG1(0x01, 0, 0);       /* debug output: main loop starts */
-	reportBuffer.buttonMask=0x00;
-	reportBuffer.dWheel=0x00;
-	reportBuffer.dx=0x00;
-	reportBuffer.dy=0x00;
+	reportBuffer_REPORT1.ReportID=0x01;
+	reportBuffer_REPORT1.buttonMask=0x01;
+	reportBuffer_REPORT1.dWheel=8466;
+	
+	//Výchozí hodnoty Reportù.
+	reportBuffer_REPORT1.ReportID = 0x01;
+	reportBuffer_REPORT2.ReportID = 0x02;
+	// Inicializace ADC pøevodníku
+	InitADC();
+	
+	//volatile counter=0;
+	ENC_InitEncoder();
+	ENC_Intterupt_Set();
+	
+	sei();
+	
     while(1)
 	{                /* main event loop */
         DBG1(0x02, 0, 0);   /* debug output: main loop iterates */
         wdt_reset();
         usbPoll();
-        if(usbInterruptIsReady()){
-            /* called after every poll of the interrupt endpoint */
-            //advanceCircleByFixedAngle();
-            DBG1(0x03, 0, 0);   /* debug output: interrupt report prepared */
-            usbSetInterrupt((void *)&reportBuffer, sizeof(reportBuffer));
+        
+		reportBuffer_REPORT1.dWheel = (counter & 0x03FF);
+		while(!usbInterruptIsReady())
+		{
+			usbPoll();
         }
+		usbSetInterrupt((void *)&reportBuffer_REPORT1, sizeof(reportBuffer_REPORT1));
+		
+		// Pøeètení ADC hodnoty pinu X,Y a Z.
+		reportBuffer_REPORT2.dx = ReadADC(AxisX_PIN);
+		reportBuffer_REPORT2.dy = ReadADC(AxisY_PIN);
+		reportBuffer_REPORT2.dz = ReadADC(AxisZ_PIN);
+		while(!usbInterruptIsReady())
+		{
+			usbPoll();
+		}
+		usbSetInterrupt((void *)&reportBuffer_REPORT2, sizeof(reportBuffer_REPORT2));
     }
 }
 

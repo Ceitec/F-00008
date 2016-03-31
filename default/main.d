@@ -19,7 +19,7 @@ main.d main.o: .././main.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\pgmspace.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stddef.h \
  ../usbdrv/usbdrv.h ../usbdrv/../usbconfig.h ../usbdrv/usbportability.h \
- ../usbdrv/oddebug.h
+ ../usbdrv/oddebug.h .././ADC.h .././encoder.h .././common_defs.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -66,3 +66,9 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 ../usbdrv/usbportability.h:
 
 ../usbdrv/oddebug.h:
+
+.././ADC.h:
+
+.././encoder.h:
+
+.././common_defs.h:

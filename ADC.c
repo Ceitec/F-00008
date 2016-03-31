@@ -7,12 +7,9 @@
 
 #include "ADC.h"
 
-/*ISR(ADC_vect)
-{
-	ADCSRA |= (1 << ADSC);
-}
-*/
-void InitADC()
+
+
+void InitADC(void)
 {
 	// Select Vref=AVcc
 	ADMUX |= (1 << REFS0);
