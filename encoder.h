@@ -19,7 +19,6 @@
 #define PCINT_ENC_B		PCINT1
 //______________________
 
-
 void ENC_InitEncoder(void);
 void ENC_Intterupt_Set(void);
 

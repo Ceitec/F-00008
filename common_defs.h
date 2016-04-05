@@ -36,6 +36,7 @@ typedef unsigned long dword;
 
 #define 	sbi(port, bit)   (port) |= (1 << (bit))
 #define 	cbi(port, bit)   (port) &= ~(1 << (bit))
+#define 	nbi(port, bit)   (port) ^= (1 << (bit))
 
 #define true 1
 #define false 0

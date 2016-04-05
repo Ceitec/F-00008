@@ -82,6 +82,12 @@
   </PropertyGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\AvrGCC.targets" />
   <ItemGroup>
+    <Compile Include="ShiftRegister.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ShiftRegister.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ADC.c">
       <SubType>compile</SubType>
     </Compile>
@@ -92,6 +98,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="ADC.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Joystick.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Joystick.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="types.h">

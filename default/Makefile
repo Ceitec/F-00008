@@ -38,7 +38,9 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../ShiftRegister.c \
 ../ADC.c \
+../Joystick.c \
 ../main.c \
 ../encoder.c \
 ../usbdrv/oddebug.c \
@@ -53,7 +55,9 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+ShiftRegister.o \
 ADC.o \
+Joystick.o \
 main.o \
 encoder.o \
 usbdrv/oddebug.o \
@@ -61,7 +65,9 @@ usbdrv/usbdrv.o \
 usbdrv/usbdrvasm.o
 
 OBJS_AS_ARGS +=  \
+ShiftRegister.o \
 ADC.o \
+Joystick.o \
 main.o \
 encoder.o \
 usbdrv/oddebug.o \
@@ -69,7 +75,9 @@ usbdrv/usbdrv.o \
 usbdrv/usbdrvasm.o
 
 C_DEPS +=  \
+ShiftRegister.d \
 ADC.d \
+Joystick.d \
 main.d \
 encoder.d \
 usbdrv/oddebug.d \
@@ -77,7 +85,9 @@ usbdrv/usbdrv.d \
 usbdrv/usbdrvasm.d
 
 C_DEPS_AS_ARGS +=  \
+ShiftRegister.d \
 ADC.d \
+Joystick.d \
 main.d \
 encoder.d \
 usbdrv/oddebug.d \
@@ -98,6 +108,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 
