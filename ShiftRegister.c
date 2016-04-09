@@ -30,15 +30,17 @@ void Init_Shift_Register (void)
 	TIMSK0 |= (1 << OCIE0A);
 		
 	// Nastavení pinù na V/V
-	sbi(Display_DDR, Display_SER);		//Vystup Data
-	sbi(Display_DDR, Display_SCK);		//Vystup Shift register clock input (Pri nábìzné hranì se data nahrají do registru)
-	sbi(Display_DDR, Display_SCL);		//Vystup
-	sbi(Display_DDR, Display_RCK);		//Vystup Data storage clock input (Po nahrani všech x bitù se po nabìzne hrane nahraji do registru)
-	sbi(Display_DDR, Display_G);		//Vystup (Pri logicke 0 dojde k zobrazeni na segmenty)
+	sbi(Display_DDR, Display_DATA);		//Vystup Data
+	sbi(Display_DDR, Display_CLOCK);	//Vystup Shift register clock input (Pri nábìzné hranì se data nahrají do registru)
+	sbi(Display_DDR, Display_RESET);	//Vystup
+	sbi(Display_DDR, Display_ALL);		//Vystup Data storage clock input (Po nahrani všech x bitù se po nabìzne hrane nahraji do registru)
+	sbi(Display_DDR, Display_OUT);		//Vystup (Pri logicke 0 dojde k zobrazeni na segmenty)
 
 	// Nastavení pinu G na LOG.0
 	//Permanentní nastavení pinù
-	cbi(Display_PORT, Display_G);
-	sbi(Display_PORT, Display_SCL);
+	cbi(Display_PORT, Display_OUT);
+	sbi(Display_PORT, Display_RESET);
+	// Vynulování
+	cbi(Display_PORT, Display_ALL);
 }
 

@@ -41,11 +41,18 @@ publish any hardware using these IDs! This is for demonstration only!
 /* ------------------------------------------------------------------------- */
 /* ------------------------------ Descriptor ------------------------------- */
 
-PROGMEM const char usbHidReportDescriptor[101] = {
+PROGMEM const char usbHidReportDescriptor[137] = {
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
     0x09, 0x04,                    // USAGE (Joystick)
     0xa1, 0x01,                    // COLLECTION (Application)
     0xa1, 0x00,                    //   COLLECTION (Physical)
+	// Report ID 1
+	/*
+	1 Byte - Tlaèítka
+	2 Byte - Wheel (Zoom)
+	1 Byte - LED Status
+	2 Byte - Sedmisegment status
+	*/
     0x85, 0x01,                    //     REPORT_ID (1)
     0x05, 0x09,                    //     USAGE_PAGE (Button)
     0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
@@ -62,17 +69,6 @@ PROGMEM const char usbHidReportDescriptor[101] = {
     0x75, 0x10,                    //     REPORT_SIZE (16)
     0x95, 0x01,                    //     REPORT_COUNT (1)
     0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-    0x85, 0x02,                    //     REPORT_ID (2)
-    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-    0x09, 0x30,                    //     USAGE (X)
-    0x09, 0x31,                    //     USAGE (Y)
-    0x09, 0x32,                    //     USAGE (Z)
-    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-    0x26, 0xff, 0x03,              //     LOGICAL_MAXIMUM (1023)
-    0x75, 0x10,                    //     REPORT_SIZE (16)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
-    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-    0x85, 0x03,                    //     REPORT_ID (3)
     0x05, 0x08,                    //     USAGE_PAGE (LEDs)
     0x19, 0x01,                    //     USAGE_MINIMUM (Num Lock)
     0x29, 0x08,                    //     USAGE_MAXIMUM (Do Not Disturb)
@@ -83,12 +79,51 @@ PROGMEM const char usbHidReportDescriptor[101] = {
     0x81, 0x02,                    //     INPUT (Data,Var,Abs)
     0x05, 0x08,                    //     USAGE_PAGE (LEDs)
     0x19, 0x01,                    //     USAGE_MINIMUM (Num Lock)
-    0x29, 0x08,                    //     USAGE_MAXIMUM (Do Not Disturb)
+    0x29, 0x10,                    //     USAGE_MAXIMUM (Repeat)
     0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-    0x27, 0xff, 0xff, 0x00, 0x00,	//     LOGICAL_MAXIMUM (255)
+    0x27, 0xff, 0xff, 0x00, 0x00,  //     LOGICAL_MAXIMUM (65535)
     0x75, 0x10,                    //     REPORT_SIZE (16)
     0x95, 0x01,                    //     REPORT_COUNT (1)
     0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+	// Report ID 2
+	/*
+	2 Byte - X osa
+	2 Byte - Y osa
+	2 Byte - Z osa
+	*/
+    0x85, 0x02,                    //     REPORT_ID (2)
+    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
+    0x09, 0x30,                    //     USAGE (X)
+    0x09, 0x31,                    //     USAGE (Y)
+    0x09, 0x32,                    //     USAGE (Z)
+    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x03,              //     LOGICAL_MAXIMUM (1023)
+    0x75, 0x10,                    //     REPORT_SIZE (16)
+    0x95, 0x03,                    //     REPORT_COUNT (3)
+    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
+	// Report ID 3
+	/*
+	Vstupní data
+	1 Byte - LED (Tlaèítka) set
+	2 Byte - Segment set
+	*/
+    0x85, 0x03,                    //     REPORT_ID (3)
+    0x05, 0x08,                    //     USAGE_PAGE (LEDs)
+    0x19, 0x01,                    //     USAGE_MINIMUM (Num Lock)
+    0x29, 0x03,                    //     USAGE_MAXIMUM (Scroll Lock)
+    0x75, 0x08,                    //     REPORT_SIZE (8)
+    0x95, 0x01,                    //     REPORT_COUNT (1)
+    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+    0x26, 0xff, 0x00,              //     LOGICAL_MAXIMUM (255)
+    0x91, 0x02,                    //     OUTPUT (Data,Var,Abs)
+    0x05, 0x08,                    //     USAGE_PAGE (LEDs)
+    0x19, 0x01,                    //     USAGE_MINIMUM (Num Lock)
+    0x29, 0x0a,                    //     USAGE_MAXIMUM (Tone Enable)
+    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
+    0x27, 0xff, 0xff, 0x00, 0x00,  //     LOGICAL_MAXIMUM (65535)
+    0x75, 0x10,                    //     REPORT_SIZE (16)
+    0x95, 0x01,                    //     REPORT_COUNT (1)
+    0x91, 0x02,                    //     OUTPUT (Data,Var,Abs)
     0xc0,                          //   END_COLLECTION
     0xc0                           // END_COLLECTION
 };
@@ -112,7 +147,9 @@ typedef struct{
 	uint8_t		ReportID;
 	uint8_t		buttonMask;
 	uint16_t	dWheel;
-}report_t1;
+	uint8_t		LED_Status;
+	uint16_t	Segment;
+}report_IN_1;
 
 //Definování struktury ReportID2
 typedef struct{
@@ -120,45 +157,65 @@ typedef struct{
 	uint16_t	dx;
 	uint16_t	dy;
 	uint16_t	dz;
-}report_t2;
+}report_IN_2;
 
-//Definování strukture ReportID3
 typedef struct{
-	uint8_t		ReportID;
-	uint8_t		LEDStatus;
-	uint16_t	Display;
-}report_t3;
+	uint8_t		LED_set;
+	uint16_t	Segment_set;
+}report_OUT;
 
-static report_t1 reportBuffer_ButtonStatus;
-static report_t2 reportBuffer_Axis;
-static report_t3 reportBuffer_LEDStatus;
-static uchar    idleRate;   /* repeat rate for keyboards, never used for mice */
+
+static report_IN_1 reportBuffer_Status;
+static report_IN_2 reportBuffer_Axis;
+
 
 //Nastavení Encoderu
 volatile uint8_t Vystup[3];
 volatile uint8_t encval = 0;
 volatile uint16_t counter = 0;      //Èítaè
-uint16_t led_status;
+uint16_t led_status, led_status_temp;
+uint8_t	zmena=1;
+uint8_t i_word=0;
+uint8_t Clock_1ms=0;
 
 // Pøerušení pro shift register	
 ISR(TIMER0_COMPA_vect)
 {
 	TCNT0 = 0;
-	if ((Display_PIN & Display_SCL) != Display_SCL)
+	if ((i_word == 31) || (i_word == 32))
 	{
-		if ((led_status & 0x8000) == 0x8000)
-		{
-			sbi(Display_PORT, Display_SER);
-		} 
-		else if ((led_status & 0x0000) == 0x0000)
-		{
-			cbi(Display_PORT, Display_SER);
-		}
-		led_status = led_status << 1;
+		sbi(Display_PORT, Display_ALL);
+		i_word++;
+	}
+	else if ((i_word == 33) || (i_word == 34))
+	{
+		nbi(Display_PORT, Display_ALL);
+		led_status_temp = led_status;
+		i_word = 0;
 	}
 	else
 	{
-		sbi(Display_PORT, Display_SCL); // Vytváøení clocku po 1ms	
+		nbi(Display_PORT, Display_ALL);	
+		if (zmena)
+		{
+			cbi(Display_PORT, Display_CLOCK); // Vytváøení clocku po 1ms
+			if ((led_status_temp & 0x8000) == 0x8000)
+			{
+				sbi(Display_PORT, Display_DATA);
+			} 
+			else // if ((led_status_temp & 0x0000) == 0x0000)
+			{
+				cbi(Display_PORT, Display_DATA);
+			}
+			led_status_temp = led_status_temp << 1;
+			zmena = 0;
+		}
+		else
+		{
+			sbi(Display_PORT, Display_CLOCK); // Vytváøení clocku po 1ms	
+			zmena = 1;
+		}
+		i_word++;
 	}
 }
 
@@ -172,30 +229,30 @@ ISR(PCINT2_vect)
 	{
 		//Aktivní tlaèítko Vypnutí
 		sbi(LED_PORT_OUT, LED_VYP);
-		reportBuffer_LEDStatus.LEDStatus ^= (1 << 0);
+		reportBuffer_Status.LED_Status ^= (1 << 0);
 	}
 	if (((PORT_Temp & TL_MASK) & TL_LEFT) == TL_LEFT)
 	{
 		//Aktivní tlaèítko Levý
 		sbi(LED_PORT_OUT, LED_LEFT);
-		reportBuffer_LEDStatus.LEDStatus ^= (1 << 1);
+		reportBuffer_Status.LED_Status ^= (1 << 1);
 	}
 	if (((PORT_Temp & TL_MASK) & TL_RIGHT) == TL_RIGHT)
 	{
 		//Aktivní tlaèítko Pravý
 		sbi(LED_PORT_OUT, LED_RIGHT);
-		reportBuffer_LEDStatus.LEDStatus ^= (1 << 2);
+		reportBuffer_Status.LED_Status ^= (1 << 2);
 	}
 	if (((PORT_Temp & TL_MASK) & TL_OK) == TL_OK)
 	{
 		//Aktivní tlaèítko Ok
 		sbi(LED_PORT_OUT, LED_OK);
-		reportBuffer_LEDStatus.LEDStatus ^= (1 << 3);
+		reportBuffer_Status.LED_Status ^= (1 << 3);
 	}
 	if (((PORT_Temp & TL_MASK) & TL_XYZ) == TL_XYZ)
 	{
 		//Aktivní tlaèítko Ok
-		reportBuffer_LEDStatus.LEDStatus ^= (1 << 4);
+		reportBuffer_Status.LED_Status ^= (1 << 4);
 	}
 }
 
@@ -222,30 +279,52 @@ ISR(PCINT_Vect_Part)
 
 /* ------------------------------Zaèátek USB protokolu--------------------------------- */
 
+static uint8_t buffer[16];
+
+uchar   usbFunctionRead(uchar *data, uchar len)
+{
+    uint8_t i;
+
+   for (i=0;i<len;++i) data[i]=buffer[i];
+
+   return len;
+}
+
+/* usbFunctionWrite() is called when the host sends a chunk of data to the
+ * device. For more information see the documentation in usbdrv/usbdrv.h.
+ */
+uchar   usbFunctionWrite(uchar *data, uchar len)
+{
+    uint8_t i;
+
+   for (i=0;i<len;++i) buffer[i]=data[i];
+   reportBuffer_Status.LED_Status = buffer[1];
+   reportBuffer_Status.Segment = buffer[2] + ((unsigned short) buffer[3] << 8);
+      
+   return 1;               /* end of transfer */
+}
+
+/* ------------------------------------------------------------------------- */
+
 usbMsgLen_t usbFunctionSetup(uchar data[8])
 {
 usbRequest_t    *rq = (void *)data;
 
-    /* The following requests are never used. But since they are required by
-     * the specification, we implement them in this example.
-     */
-    if((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS){    /* class request type */
-        DBG1(0x50, &rq->bRequest, 1);   /* debug output: print our request */
+    if((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS){    /* HID class request */
         if(rq->bRequest == USBRQ_HID_GET_REPORT){  /* wValue: ReportType (highbyte), ReportID (lowbyte) */
-            /* we only have one report type, so don't look at wValue */
-            usbMsgPtr = (void *)&reportBuffer_ButtonStatus;
-            return sizeof(reportBuffer_ButtonStatus);
-        }else if(rq->bRequest == USBRQ_HID_GET_IDLE){
-            usbMsgPtr = &idleRate;
-            return 1;
-        }else if(rq->bRequest == USBRQ_HID_SET_IDLE){
-            idleRate = rq->wValue.bytes[1];
+            /* since we have only one report type, we can ignore the report-ID */
+            return USB_NO_MSG;  /* use usbFunctionRead() to obtain data */
+        }else if(rq->bRequest == USBRQ_HID_SET_REPORT){
+            /* since we have only one report type, we can ignore the report-ID */
+            return USB_NO_MSG;  /* use usbFunctionWrite() to receive data from host */
         }
     }else{
-        /* no vendor specific requests implemented */
+        /* ignore vendor type requests, we don't use any */
     }
-    return 0;   /* default for not implemented requests: return no data back to host */
+    return 0;
 }
+
+
 
 /* ------------------------------------------------------------------------- */
 
@@ -273,21 +352,24 @@ int main(void)
     usbDeviceConnect();
     sei();
     DBG1(0x01, 0, 0);       /* debug output: main loop starts */
-	reportBuffer_ButtonStatus.ReportID=0x01;
-	reportBuffer_ButtonStatus.buttonMask=0x01;
-	reportBuffer_ButtonStatus.dWheel=8466;
+	
+	reportBuffer_Status.ReportID=0x01;
+	reportBuffer_Status.buttonMask=0x01;
+	reportBuffer_Status.dWheel=8466;
 	
 	//Výchozí hodnoty Reportù.
-	reportBuffer_ButtonStatus.ReportID = 0x01;
+	reportBuffer_Status.ReportID = 0x01;
 	reportBuffer_Axis.ReportID = 0x02;
-	reportBuffer_LEDStatus.ReportID = 0x03;
+	//Inicializace
+	reportBuffer_Status.LED_Status = 0xFF;
+	reportBuffer_Status.Segment = 0x3031;
 	// Inicializace ADC pøevodníku
 	InitADC();
 	
 	//volatile counter=0;
 	ENC_InitEncoder();
 	ENC_Intterupt_Set();
-	
+	led_status_temp = led_status;
 	sei();
 	
     while(1)
@@ -296,12 +378,12 @@ int main(void)
         wdt_reset();
         usbPoll();
         
-		reportBuffer_ButtonStatus.dWheel = counter;
+		reportBuffer_Status.dWheel = counter;
 		while(!usbInterruptIsReady())
 		{
 			usbPoll();
         }
-		usbSetInterrupt((void *)&reportBuffer_ButtonStatus, sizeof(reportBuffer_ButtonStatus));
+		usbSetInterrupt((void *)&reportBuffer_Status, sizeof(reportBuffer_Status));
 		
 		// Pøeètení ADC hodnoty pinu X,Y a Z.
 		reportBuffer_Axis.dx = ReadADC(AxisX_PIN);
@@ -312,14 +394,6 @@ int main(void)
 			usbPoll();
 		}
 		usbSetInterrupt((void *)&reportBuffer_Axis, sizeof(reportBuffer_Axis));
-		// Report LED diod.
-		reportBuffer_LEDStatus.LEDStatus = 0xFF;
-		reportBuffer_LEDStatus.Display = 0x3031;
-		while(!usbInterruptIsReady())
-		{
-			usbPoll();
-		}
-		usbSetInterrupt((void *)&reportBuffer_LEDStatus, sizeof(reportBuffer_LEDStatus));
     }
 }
 
